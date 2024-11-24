@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3 uid="uid://cuvyms1dk22kf"]
+
+[ext_resource type="Script" path="res://scenes/game.gd" id="1_h0vs6"]
+[ext_resource type="Texture2D" uid="uid://dn2svh8j7hy01" path="res://assets/GameBg.png" id="1_hnrpd"]
+[ext_resource type="PackedScene" uid="uid://bya0kkrkdcobk" path="res://scenes/paddle.tscn" id="2_7wxmu"]
+[ext_resource type="PackedScene" uid="uid://d3cx4d4rj5151" path="res://scenes/gem.tscn" id="2_32k17"]
+[ext_resource type="PackedScene" uid="uid://c8ikxu26vn07n" path="res://scenes/gem2.tscn" id="3_vg0v4"]
+[ext_resource type="AudioStream" uid="uid://4u0b3qcm1x2e" path="res://assets/bgm_action_5.mp3" id="6_83ms4"]
+[ext_resource type="AudioStream" uid="uid://k4bjkaf23ya4" path="res://assets/spell1_0.wav" id="7_si2dc"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_n1put"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ygnj7"]
+font_size = 60
+font_color = Color(0.93273, 0.43109, 0.654977, 1)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_h0vs6")
+gems = Array[PackedScene]([ExtResource("2_32k17"), ExtResource("3_vg0v4")])
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(564, 378)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_hnrpd")
+
+[node name="Paddle" parent="." instance=ExtResource("2_7wxmu")]
+position = Vector2(523, 593)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_styles/normal = SubResource("StyleBoxLine_n1put")
+text = "0000"
+label_settings = SubResource("LabelSettings_ygnj7")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_83ms4")
+volume_db = -17.333
+autoplay = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_si2dc")
+volume_db = -14.686
+pitch_scale = 2.64
+
+[connection signal="area_entered" from="Paddle" to="." method="_on_paddle_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
